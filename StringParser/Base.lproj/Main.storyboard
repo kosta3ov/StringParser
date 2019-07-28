@@ -29,7 +29,6 @@
         <!--Start View Controller-->
         <scene sceneID="rAM-4z-z8I">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="I3o-M9-PhY" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Lmm-rH-aJY" customClass="StartViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Nvr-Tr-7gk">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
@@ -76,8 +75,7 @@
                                         <rect key="frame" x="0.0" y="169" width="374" height="58.5"/>
                                         <state key="normal" title="Search"/>
                                         <connections>
-                                            <action selector="startSearching:" destination="Lmm-rH-aJY" eventType="touchUpInside" id="Hfx-v5-vNN"/>
-                                            <segue destination="BYZ-38-t0r" kind="show" id="28p-HX-rhp"/>
+                                            <action selector="startSearching:" destination="Lmm-rH-aJY" eventType="touchUpInside" id="mGD-nw-hoP"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -102,19 +100,20 @@
                         <outlet property="patternTextField" destination="d8L-UT-FAJ" id="nvF-vc-XJN"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I3o-M9-PhY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1104" y="68"/>
         </scene>
         <!--List Result View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ListResultViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ListResultViewController" id="BYZ-38-t0r" customClass="ListResultViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="lzP-7z-FJz">
-                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                         </subviews>

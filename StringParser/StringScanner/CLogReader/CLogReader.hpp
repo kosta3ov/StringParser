@@ -10,6 +10,7 @@
 #define CLogReader_hpp
 
 #include <stdio.h>
+#include "StringInfo.hpp"
 
 class CLogReader {
     
@@ -21,9 +22,13 @@ public:
     bool AddSourceBlock(const char* block, const size_t block_size);
     
 private:
+    StringInfo* info;
+    
+    bool startSearching();
+    
     char* filterString;
-    
-    
+    char* blockString;
+        
 };
 
 #endif /* CLogReader_hpp */

@@ -7,12 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Downloader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class DownloadService;
 
-@interface DownloadService : NSObject
+@protocol ServiceProtocol
 
+- (void) downloadService:(DownloadService*) service parsedLines:(NSArray<NSString*>*) lines;
+
+@end
+
+
+@interface DownloadService : NSObject <DownloaderDelegate>
+
+@property (weak, nonatomic) id<ServiceProtocol> delegate;
+
+- (void) configureScannerWith:(NSString*) pattern;
 - (void) downloadFileAt:(NSString*) fileURL;
 
 @end
