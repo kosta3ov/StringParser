@@ -11,7 +11,8 @@
 #include "StringInfo.hpp"
 
 CLogReader::CLogReader() {
-    
+    this->blockString = new char [0];
+    this->filterString = new char [0];
 }
 
 CLogReader::~CLogReader() {
@@ -37,6 +38,8 @@ bool CLogReader::SetFilter(const char *filter) {
 }
 
 bool CLogReader::AddSourceBlock(const char *block, const size_t block_size) {
+    
+    delete [] this->blockString;
     
     this->blockString = new char [block_size];
     

@@ -26,17 +26,15 @@
     
     if (self) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString* documentsDir = [paths objectAtIndex:0];
+        NSString* documentsDir = (NSString*)[paths objectAtIndex:0];
         NSString *fileName = [documentsDir stringByAppendingPathComponent:@"results.log"];
         
-        self.resultsLogPath = fileName;
+        self.resultsLogPath = [NSString stringWithString:fileName];
         self.downloader = [[Downloader alloc] init];
         self.downloader.delegate = self;
         
         self.scanner = [[StringScanner alloc] init];
         
-        
-        [fileName release];
     }
     
     return self;
@@ -112,12 +110,12 @@
     NSError* err;
     
     NSString* joined = [lines componentsJoinedByString:@"\n"];
-    
+    NSLog(@"%@", self.resultsLogPath);
     BOOL success = [joined writeToFile:self.resultsLogPath atomically:NO encoding:NSUTF8StringEncoding error:&err];
     
     if (!success || err) {
         if (err) {
-            NSLog(@"%@", [err localizedDescription]);
+            NSLog(@"Err != nil");
         }
         else {
             NSLog(@"Error writing to results.log");
