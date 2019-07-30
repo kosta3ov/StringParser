@@ -11,9 +11,7 @@
 
 
 @interface StringScanner() {
-    
     CLogReader* reader;
-    
 }
 
 @end

@@ -13,31 +13,42 @@ typedef enum {
     star, character
 } State;
 
+StringInfo::StringInfo() {
+    this->string = new char [0];
+    this->length = 0;
+    this->startsWithStar = false;
+    this->endsWithStar = false;
+    this->views = new Vector<StringView>(1);
+}
+
 StringInfo::StringInfo(const char* str) {
-    size_t strLen = strlen(str);
-    this->string = new char [strLen];
-    strcpy(this->string, str);
-    
-    this->length = strLen;
+    this->string = strdup(str);
+    this->length = strlen(str);
     
     if (str[0] == STAR) {
         this->startsWithStar = true;
     }
     
-    if (str[strLen - 1] == STAR) {
+    if (str[this->length - 1] == STAR) {
         this->endsWithStar = true;
     }
     
-    this->views = new Vector<StringView>(100);
+    this->views = new Vector<StringView>(10);
     this->splitIntoViews();
     
+}
+
+StringInfo::~StringInfo() {
+    delete views;
+    delete [] string;
+
 }
 
 void StringInfo::splitIntoViews() {
     bool prevState = star;
     bool newState = star;
     
-    StringView* view;
+    StringView* view = NULL;
     
     for (int i = 0; i < length; i++) {
         newState = string[i] != STAR ? character : star;
@@ -47,8 +58,7 @@ void StringInfo::splitIntoViews() {
         }
         else if (newState == star && prevState == character) {
             views->PushBack(view);
-            
-            //delete view;
+            delete view;
         }
         else if (newState == star && prevState == star) {
             continue;
@@ -62,34 +72,44 @@ void StringInfo::splitIntoViews() {
     
     if (newState == character) {
         views->PushBack(view);
-        
-        //delete view;
+        delete view;
     }
 }
 
 bool StringInfo::matchWith(const char *str) {
     size_t len = strlen(str);
+    const char* end = str + len;
     
     char* pointer = (char*)str;
     
     for (int i = 0; i < views->GetSize(); i++) {
         StringView* view = views->Get(i);
         
-        while (pointer + view->length < str + len) {
+        bool isFounded = false;
+        
+        while (pointer + view->length < end) {
             StringView subView = StringView(pointer, view->length);
             if (view->match(&subView)) {
                 pointer += view->length;
+                isFounded = true;
                 break;
             }
             else {
+                if (this->startsWithStar == false) {
+                    return false;
+                }
                 pointer++;
             }
         }
         
-        if (pointer + view->length >= str + len) {
+        if (!isFounded && (pointer + view->length >= end)) {
+            return false;
+        }
+        if (isFounded && (i == views->GetSize() - 1) && (pointer < end) && this->endsWithStar == false) {
             return false;
         }
     }
+    
     
     return true;
 }

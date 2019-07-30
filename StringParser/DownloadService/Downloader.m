@@ -10,7 +10,6 @@
 
 @interface Downloader() <NSURLSessionDataDelegate>
 
-
 @property (strong, nonatomic) NSURLSession* session;
 @property (strong, nonatomic) NSURLSessionDataTask* task;
 
@@ -32,13 +31,10 @@
 }
 
 - (void) startDownload:(NSURL*) url {
-    
     NSURLRequest* req = [[NSURLRequest alloc] initWithURL:url];
 
     self.task = [self.session dataTaskWithRequest:req];
     [self.task resume];
-    
-    [req release];
 }
 
 
@@ -47,6 +43,7 @@
 }
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
+    
     [self.downloadData appendData:data];
     [self.delegate downloadPartDataFrom:self];
 }
@@ -60,5 +57,11 @@
     }
 }
 
+- (void)dealloc {
+    [_downloadData release];
+    [_session release];
+    [_task release];
+    [super dealloc];
+}
 
 @end

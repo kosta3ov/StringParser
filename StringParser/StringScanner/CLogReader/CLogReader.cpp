@@ -13,25 +13,25 @@
 CLogReader::CLogReader() {
     this->blockString = new char [0];
     this->filterString = new char [0];
+    this->info = new StringInfo();
 }
 
 CLogReader::~CLogReader() {
     delete [] this->filterString;
     delete [] this->blockString;
-
+    delete info;
 }
 
 bool CLogReader::SetFilter(const char *filter) {
-    
     size_t len = strlen(filter);
-    
     if (len <= 0) {
         return false;
     }
     
-    this->filterString = new char [len];
-    strcpy(this->filterString, filter);
+    delete [] this->filterString;
+    this->filterString = strdup(filter);
     
+    delete this->info;
     this->info = new StringInfo(this->filterString);
     
     return true;
@@ -40,10 +40,7 @@ bool CLogReader::SetFilter(const char *filter) {
 bool CLogReader::AddSourceBlock(const char *block, const size_t block_size) {
     
     delete [] this->blockString;
-    
-    this->blockString = new char [block_size];
-    
-    strcpy(this->blockString, block);
+    this->blockString = strdup(block);
     
     return startSearching();
 }

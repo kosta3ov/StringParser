@@ -60,56 +60,48 @@
 #pragma mark - Downloader delegate
 
 - (void) downloadPartDataFrom:(Downloader*) downloader {
-    NSString* str = [[NSString alloc] initWithData:downloader.downloadData encoding:NSUTF8StringEncoding];
-    
-    NSArray<NSString*>* lines = [str componentsSeparatedByString:@"\n"];
-    
-    NSMutableArray<NSString*> *linesToWrite = [NSMutableArray array];
-    
-    NSString* lastLine = [lines lastObject];
-    
-    for (NSInteger i = 0; i < lines.count - 1; i++) {
-        BOOL success = [self.scanner addSourceBlock:lines[i]];
-        if (success) {
-            [linesToWrite addObject:lines[i]];
+    @autoreleasepool {
+        NSString* str = [[[NSString alloc] initWithData:downloader.downloadData encoding:NSUTF8StringEncoding] autorelease];
+        
+        NSArray<NSString*>* lines = [str componentsSeparatedByString:@"\n"];
+        
+        NSMutableArray<NSString*> *linesToWrite = [NSMutableArray array];
+        
+        NSString* lastLine = [lines lastObject];
+        
+        for (NSInteger i = 0; i < lines.count - 1; i++) {
+            BOOL success = [self.scanner addSourceBlock:lines[i]];
+            if (success) {
+                [linesToWrite addObject:lines[i]];
+            }
         }
+        
+        BOOL successWrite = [self writeLines:linesToWrite];
+        
+        if (successWrite) {
+            [self.delegate downloadService:self parsedLines:linesToWrite];
+        }
+        
+        [downloader.downloadData release];
+    
+        downloader.downloadData = [[[lastLine dataUsingEncoding:NSUTF8StringEncoding] mutableCopy] retain];
+        
     }
     
-    BOOL successWrite = [self writeLines:linesToWrite];
-    if (successWrite) {
-        [self.delegate downloadService:self parsedLines:linesToWrite];
-    }
-
-    //[linesToWrite release];
-    
-    //[downloader.downloadData release];
-    
-    downloader.downloadData = [[lastLine dataUsingEncoding:NSUTF8StringEncoding] mutableCopy];
-    
-//    [lines release];
- //   [str release];
 }
 
 #pragma mark - Disk operations
 
 - (void) createLogFile {
-    NSError* err;
-    
     NSFileManager* fileManager = [NSFileManager defaultManager];
     [fileManager createFileAtPath:self.resultsLogPath contents:nil attributes:nil];
-
-//    if (![fileManager fileExistsAtPath:self.resultsLogPath]) {
-//        [fileManager createFileAtPath:self.resultsLogPath contents:nil attributes:nil];
-//    }
-//    else {
-//        [fileManager removeItemAtPath:self.resultsLogPath error:&err];
-//    }
 }
 
 - (BOOL) writeLines:(NSArray<NSString*>*) lines {
     NSError* err;
     
     NSString* joined = [lines componentsJoinedByString:@"\n"];
+    
     NSLog(@"%@", self.resultsLogPath);
     BOOL success = [joined writeToFile:self.resultsLogPath atomically:NO encoding:NSUTF8StringEncoding error:&err];
     
@@ -125,7 +117,16 @@
         NSLog(@"Sucessfuly write");
     }
     
+    //[joined release];
+    
     return success;
+}
+
+- (void)dealloc {
+    [_downloader release];
+    [_scanner release];
+    [_resultsLogPath release];
+    [super dealloc];
 }
 
 @end

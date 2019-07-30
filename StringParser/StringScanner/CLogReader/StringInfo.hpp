@@ -13,7 +13,6 @@
 #include "vector.hpp"
 #include "StringView.hpp"
 
-
 const char STAR = '*';
 const char QUESTION = '?';
 
@@ -21,6 +20,9 @@ class StringInfo {
     
 public:
     StringInfo(const char* str);
+    StringInfo();
+    
+    ~StringInfo();
     
     bool matchWith(const char* str);
     
@@ -34,8 +36,6 @@ private:
     size_t length;
     
     Vector<StringView>* views;
-    
-    
 };
 
 

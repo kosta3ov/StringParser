@@ -61,6 +61,9 @@
 - (void)dealloc {
     [_tableView release];
     [_service release];
+    [_parsedLines release];
+    [_fileURL release];
+    [_stringPattern release];
     [super dealloc];
 }
 
