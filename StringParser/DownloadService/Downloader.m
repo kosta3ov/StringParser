@@ -10,8 +10,8 @@
 
 @interface Downloader() <NSURLSessionDataDelegate>
 
-@property (strong, nonatomic) NSURLSession* session;
-@property (strong, nonatomic) NSURLSessionDataTask* task;
+@property (retain, nonatomic) NSURLSession* session;
+@property (retain, nonatomic) NSURLSessionDataTask* task;
 
 @end
 
@@ -23,9 +23,12 @@
     if (self) {
         
         NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
+        
         self.session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
         
-        self.downloadData = [[NSMutableData alloc] init];
+        NSMutableData* newData = [NSMutableData new];
+        self.downloadData = newData;
+        [newData release];
     }
     return self;
 }
@@ -35,7 +38,10 @@
 
     self.task = [self.session dataTaskWithRequest:req];
     [self.task resume];
+    
+    [req release];
 }
+
 
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
@@ -43,7 +49,6 @@
 }
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveData:(NSData *)data {
-    
     [self.downloadData appendData:data];
     [self.delegate downloadPartDataFrom:self];
 }
@@ -55,6 +60,11 @@
     else {
         NSLog(@"Response: %@", task.response);
     }
+}
+
+- (void) releaseData {
+    [_downloadData release];
+    _downloadData = nil;
 }
 
 - (void)dealloc {

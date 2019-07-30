@@ -9,11 +9,13 @@
 #import "ListResultViewController.h"
 #import "DownloadService.h"
 
-@interface ListResultViewController () <ServiceProtocol, UITableViewDataSource>
+@interface ListResultViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) DownloadService* service;
 
 @property (strong, nonatomic) NSMutableArray<NSString*>* parsedLines;
+
+@property (assign, nonatomic) BOOL isLoading;
 
 @end
 
@@ -24,24 +26,19 @@
     
     self.parsedLines = [NSMutableArray array];
     self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.isLoading = NO;
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-     
-    self.service = [[DownloadService alloc] init];
-    self.service.delegate = self;
-        
+    
+    DownloadService* service = [[DownloadService alloc] init];
+    self.service = service;
+    [service release];
+    
     [self.service configureScannerWith:self.stringPattern];
     [self.service downloadFileAt:self.fileURL];
-}
-
-- (void) downloadService:(DownloadService *)service parsedLines:(NSArray<NSString *> *)lines {
     
-    ListResultViewController* __weak weakSelf = self;
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.parsedLines addObjectsFromArray:lines];
-        [weakSelf.tableView reloadData];
-    });
+    [self.service fetchNewStrings];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -57,6 +54,15 @@
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row + 1 > self.parsedLines.count && self.isLoading == NO) {
+        self.isLoading = YES;
+        NSMutableArray<NSString*>* newStrings = [self.service fetchNewStrings];
+        [self.parsedLines addObjectsFromArray:newStrings];
+        [self.tableView reloadData];
+        self.isLoading = NO;
+    }
+}
 
 - (void)dealloc {
     [_tableView release];

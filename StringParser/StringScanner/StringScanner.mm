@@ -34,8 +34,7 @@
 
 - (BOOL) addSourceBlock:(NSString*) string {
     const char* str = [string cStringUsingEncoding:NSUTF8StringEncoding];
-    char* strCopy = strdup(str);
-    return (BOOL)reader->AddSourceBlock(strCopy, strlen(strCopy) + 1);
+    return (BOOL)reader->AddSourceBlock(str, strlen(str) + 1);
 }
 
 - (void)dealloc {

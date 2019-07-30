@@ -19,11 +19,12 @@
 
 @interface Downloader : NSObject <NSURLSessionDataDelegate>
 
-@property (strong, nonatomic) NSMutableData* downloadData;
+@property (retain, nonatomic) NSMutableData* downloadData;
 
 @property (weak, nonatomic) id<DownloaderDelegate> delegate;
 
 - (void) startDownload:(NSURL*) url;
+- (void) releaseData;
 
 @end
 
