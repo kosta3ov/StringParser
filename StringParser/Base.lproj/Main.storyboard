@@ -134,5 +134,38 @@
             </objects>
             <point key="canvasLocation" x="-271" y="68"/>
         </scene>
+        <!--String Viewer Controller-->
+        <scene sceneID="LjQ-Lw-3J4">
+            <objects>
+                <viewController storyboardIdentifier="StringViewerController" id="2RB-L5-a6v" customClass="StringViewerController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mg1-MP-dsT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W8Q-Eh-HUb">
+                                <rect key="frame" x="20" y="44" width="374" height="818"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="W8Q-Eh-HUb" firstAttribute="bottom" secondItem="5V0-BG-IKh" secondAttribute="bottom" id="D66-sb-pIn"/>
+                            <constraint firstItem="5V0-BG-IKh" firstAttribute="trailing" secondItem="W8Q-Eh-HUb" secondAttribute="trailing" constant="20" id="aWU-36-6ws"/>
+                            <constraint firstItem="W8Q-Eh-HUb" firstAttribute="top" secondItem="5V0-BG-IKh" secondAttribute="top" id="fMD-kc-dgt"/>
+                            <constraint firstItem="W8Q-Eh-HUb" firstAttribute="leading" secondItem="5V0-BG-IKh" secondAttribute="leading" constant="20" id="fZI-JJ-Mw0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="5V0-BG-IKh"/>
+                    </view>
+                    <connections>
+                        <outlet property="textView" destination="W8Q-Eh-HUb" id="U4d-y1-pQR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ieV-bN-asn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="624.63768115942037" y="76.339285714285708"/>
+        </scene>
     </scenes>
 </document>

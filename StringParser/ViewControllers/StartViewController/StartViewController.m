@@ -9,28 +9,10 @@
 #import "StartViewController.h"
 #import "ListResultViewController.h"
 
-@interface StartViewController ()
-
-@property (strong, nonatomic) UIAlertController* alert;
-
-@end
-
 @implementation StartViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Alert" message:@"Empty fields" preferredStyle:UIAlertControllerStyleAlert];
-    
-    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
-    
-    [alertController addAction:cancelAction];
-    
-    self.alert = alertController;
-    
-}
-
 - (IBAction)startSearching:(id)sender {
+    
     NSString* fileURL = self.fileUrlTextField.text;
     NSString* pattern = self.patternTextField.text;
     
@@ -46,22 +28,29 @@
 }
 
 - (void) presentListResultsWithURL:(NSString*) fileURL andPattern:(NSString*) pattern {
+    
     ListResultViewController* lrvc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ListResultViewController"];
     
-    lrvc.fileURL = fileURL;
-    lrvc.stringPattern = pattern;
+    lrvc.fileURL = [[fileURL copy] autorelease];
+    lrvc.stringPattern = [[pattern copy] autorelease];
     
     [self.navigationController pushViewController:lrvc animated:YES];
 }
 
 - (void) presentAlert {
-    [self presentViewController:self.alert animated:YES completion:nil];
+    UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Alert" message:@"Empty fields" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+    
+    [alertController addAction:cancelAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)dealloc {
-    [_fileUrlTextField release];
-    [_patternTextField release];
-    [_alert release];
+    _fileUrlTextField = nil;
+    _patternTextField = nil;
+    
     [super dealloc];
 }
 

@@ -95,6 +95,4 @@ Vector<T>::~Vector () {
     delete [] Data;
 }
 
-
-
 #endif /* Vector_hpp */

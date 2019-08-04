@@ -6,14 +6,14 @@
 //  Copyright © 2019 Константин Трехперстов. All rights reserved.
 //
 
-#include "StringInfo.hpp"
+#include "PatternInfo.hpp"
 #include <cstring>
 
 typedef enum {
     star, character
 } State;
 
-StringInfo::StringInfo() {
+PatternInfo::PatternInfo() {
     this->string = new char [0];
     this->length = 0;
     this->startsWithStar = false;
@@ -21,7 +21,7 @@ StringInfo::StringInfo() {
     this->views = new Vector<StringView>(1);
 }
 
-StringInfo::StringInfo(const char* str) {
+PatternInfo::PatternInfo(const char* str) {
     this->string = strdup(str);
     this->length = strlen(str);
     
@@ -38,13 +38,13 @@ StringInfo::StringInfo(const char* str) {
     
 }
 
-StringInfo::~StringInfo() {
+PatternInfo::~PatternInfo() {
     delete views;
     delete [] string;
 
 }
 
-void StringInfo::splitIntoViews() {
+void PatternInfo::splitIntoViews() {
     bool prevState = star;
     bool newState = star;
     
@@ -76,7 +76,7 @@ void StringInfo::splitIntoViews() {
     }
 }
 
-bool StringInfo::matchWith(const char *str) {
+bool PatternInfo::matchWith(const char *str) {
     size_t len = strlen(str);
     const char* end = str + len;
     
@@ -105,6 +105,7 @@ bool StringInfo::matchWith(const char *str) {
         if (!isFounded && (pointer + view->length >= end)) {
             return false;
         }
+        
         if (isFounded && (i == views->GetSize() - 1) && (pointer < end) && this->endsWithStar == false) {
             return false;
         }

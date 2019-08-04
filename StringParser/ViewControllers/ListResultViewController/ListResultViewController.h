@@ -10,7 +10,7 @@
 
 @interface ListResultViewController : UIViewController
 
-@property (retain, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSString* fileURL;
 @property (strong, nonatomic) NSString* stringPattern;

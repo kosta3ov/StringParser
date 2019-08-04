@@ -8,12 +8,12 @@
 
 #include "CLogReader.hpp"
 #include <cstring>
-#include "StringInfo.hpp"
+#include "PatternInfo.hpp"
 
 CLogReader::CLogReader() {
     this->blockString = new char [0];
     this->filterString = new char [0];
-    this->info = new StringInfo();
+    this->info = new PatternInfo();
 }
 
 CLogReader::~CLogReader() {
@@ -32,7 +32,7 @@ bool CLogReader::SetFilter(const char *filter) {
     this->filterString = strdup(filter);
     
     delete this->info;
-    this->info = new StringInfo(this->filterString);
+    this->info = new PatternInfo(this->filterString);
     
     return true;
 }
@@ -40,6 +40,7 @@ bool CLogReader::SetFilter(const char *filter) {
 bool CLogReader::AddSourceBlock(const char *block, const size_t block_size) {
     
     delete [] this->blockString;
+    
     this->blockString = strdup(block);
     
     return startSearching();

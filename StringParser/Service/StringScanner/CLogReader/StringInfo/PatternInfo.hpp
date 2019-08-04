@@ -16,13 +16,13 @@
 const char STAR = '*';
 const char QUESTION = '?';
 
-class StringInfo {
+class PatternInfo {
     
 public:
-    StringInfo(const char* str);
-    StringInfo();
+    PatternInfo(const char* str);
+    PatternInfo();
     
-    ~StringInfo();
+    ~PatternInfo();
     
     bool matchWith(const char* str);
     

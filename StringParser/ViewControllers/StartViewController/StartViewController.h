@@ -12,9 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface StartViewController : UIViewController
 
-
-@property (retain, nonatomic) IBOutlet UITextField *fileUrlTextField;
-@property (retain, nonatomic) IBOutlet UITextField *patternTextField;
+@property (weak, nonatomic) IBOutlet UITextField *fileUrlTextField;
+@property (weak, nonatomic) IBOutlet UITextField *patternTextField;
 
 @end
 

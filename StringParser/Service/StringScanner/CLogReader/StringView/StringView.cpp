@@ -7,7 +7,7 @@
 //
 
 #include "StringView.hpp"
-#include "StringInfo.hpp"
+#include "PatternInfo.hpp"
 
 StringView::StringView() {
     this->start = NULL;

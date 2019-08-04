@@ -12,6 +12,8 @@
 
 @protocol DownloaderDelegate <NSObject>
 
+// Delegate method called each time after recieving data
+
 - (void) downloadPartDataFrom:(Downloader*) downloader;
 
 @end
@@ -19,12 +21,10 @@
 
 @interface Downloader : NSObject <NSURLSessionDataDelegate>
 
-@property (retain, nonatomic) NSMutableData* downloadData;
-
+@property (strong, nonatomic) NSMutableData* downloadData;
 @property (weak, nonatomic) id<DownloaderDelegate> delegate;
 
 - (void) startDownload:(NSURL*) url;
-- (void) releaseData;
 
 @end
 

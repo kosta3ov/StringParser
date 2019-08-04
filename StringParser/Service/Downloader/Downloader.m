@@ -10,8 +10,8 @@
 
 @interface Downloader() <NSURLSessionDataDelegate>
 
-@property (retain, nonatomic) NSURLSession* session;
-@property (retain, nonatomic) NSURLSessionDataTask* task;
+@property (strong, nonatomic) NSURLSession* session;
+@property (strong, nonatomic) NSURLSessionDataTask* task;
 
 @end
 
@@ -19,30 +19,32 @@
 @implementation Downloader
 
 - (instancetype)init {
+    
     self = [super init];
     if (self) {
         
-        NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
-        
+        // Session configuration
+        NSURLSessionConfiguration* config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
         self.session = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:nil];
         
-        NSMutableData* newData = [NSMutableData new];
-        self.downloadData = newData;
-        [newData release];
+        // Cached data for processing recieved data
+        self.downloadData = [[NSMutableData new] autorelease];
     }
     return self;
 }
 
 - (void) startDownload:(NSURL*) url {
-    NSURLRequest* req = [[NSURLRequest alloc] initWithURL:url];
+    // Creating request
+    NSURLRequest* req = [[[NSURLRequest alloc] initWithURL:url] autorelease];
 
+    // Creating task
     self.task = [self.session dataTaskWithRequest:req];
-    [self.task resume];
     
-    [req release];
+    // Start task
+    [self.task resume];
 }
 
-
+#pragma mark - URLSessionDownloadDelegate
 
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)dataTask didReceiveResponse:(NSURLResponse *)response completionHandler:(void (^)(NSURLSessionResponseDisposition))completionHandler {
     completionHandler(NSURLSessionResponseAllow);
@@ -62,15 +64,17 @@
     }
 }
 
-- (void) releaseData {
-    [_downloadData release];
-    _downloadData = nil;
-}
+#pragma mark - Clear
 
 - (void)dealloc {
     [_downloadData release];
     [_session release];
     [_task release];
+    
+    _downloadData = nil;
+    _session = nil;
+    _task = nil;
+    
     [super dealloc];
 }
 
