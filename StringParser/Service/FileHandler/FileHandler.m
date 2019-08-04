@@ -34,6 +34,7 @@
     NSString *fileName = [documentsDir stringByAppendingPathComponent:@"results.log"];
     const char* path = [fileName cStringUsingEncoding:NSUTF8StringEncoding];
     self.resultsLogPath = strdup(path);
+    
 }
 
 - (void) setupFile {
@@ -85,32 +86,33 @@
     // Moving to current offset
     fseek(f, self.currentOffset, SEEK_SET);
     
-    // Reading up to last position
-    for (int i = firstUnreadPosition; i < self.positions.count; i++) {
+    
+    // Reading one position
+    int i = firstUnreadPosition;
+    
+    @autoreleasepool {
         
-        @autoreleasepool {
-            
-            // Calculating delta
-            long pos = self.positions[i].longValue;
-            long len = pos - self.currentOffset;
-            
-            // Reading from file
-            char* string = (char*)malloc(sizeof(char) * len);
-            fread(string, sizeof(char), (size_t)len, f);
-            
-            // Adding new lines + converting
-            NSString* bigString = [[[NSString alloc] initWithCString:string encoding:NSUTF8StringEncoding] autorelease];
-            
-            // Releasing memmory
-            free(string);
-            
-            NSArray<NSString*>* lines = [bigString componentsSeparatedByString:@"\n"];
-            [arr addObjectsFromArray:lines];
-            
-            // Updating current position
-            self.currentOffset = pos;
-        }
+        // Calculating delta
+        long pos = self.positions[i].longValue;
+        long len = pos - self.currentOffset;
+        
+        // Reading from file
+        char* string = (char*)malloc(sizeof(char) * len);
+        fread(string, sizeof(char), (size_t)len, f);
+        
+        // Adding new lines + converting
+        NSString* bigString = [[[NSString alloc] initWithCString:string encoding:NSUTF8StringEncoding] autorelease];
+        
+        // Releasing memmory
+        free(string);
+        
+        NSArray<NSString*>* lines = [bigString componentsSeparatedByString:@"\n"];
+        [arr addObjectsFromArray:lines];
+        
+        // Updating current position
+        self.currentOffset = pos;
     }
+    
     
     // Closing file
     fclose(f);

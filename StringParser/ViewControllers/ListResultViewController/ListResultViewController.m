@@ -62,7 +62,7 @@ static const double TimerInterval = 0.5;
     CGFloat distanceFromBottom = self.tableView.contentSize.height - contentYoffset;
     
     // Checking position at bottom
-    if (distanceFromBottom < height) {
+    if (distanceFromBottom <= height) {
         
         // When at bottom read new lines from file
         NSMutableArray* newLines = [[self.service readNewLines] autorelease];

@@ -44,12 +44,14 @@ PatternInfo::~PatternInfo() {
 
 }
 
+
 void PatternInfo::splitIntoViews() {
     bool prevState = star;
     bool newState = star;
     
     StringView* view = NULL;
     
+    // Get vector of string views
     for (int i = 0; i < length; i++) {
         newState = string[i] != STAR ? character : star;
         
@@ -82,6 +84,7 @@ bool PatternInfo::matchWith(const char *str) {
     
     char* pointer = (char*)str;
     
+    // Settings for last string view
     bool lastValue = false;
     char* lastEndsAt = NULL;
     
@@ -90,7 +93,7 @@ bool PatternInfo::matchWith(const char *str) {
         StringView* view = views->Get(i);
         
         bool isFounded = false;
-    
+        
         if (i == views->GetSize() - 1) {
             lastValue = true;
         }
@@ -109,6 +112,7 @@ bool PatternInfo::matchWith(const char *str) {
                 
                 isFounded = true;
                 
+                // Get last matched pointer for last string viw
                 if (lastValue) {
                     lastEndsAt = pointer;
                     continue;
@@ -117,7 +121,7 @@ bool PatternInfo::matchWith(const char *str) {
                 break;
             }
             else {
-                // First mismatch without first stars
+                // First mismatch without stars at the beginning for first view
                 if (this->startsWithStar == false && i == 0) {
                     return false;
                 }
@@ -131,7 +135,7 @@ bool PatternInfo::matchWith(const char *str) {
             return false;
         }
         
-        // if found and last view poiner end earlier when no star at the end
+        // if found and last view poiner ends earlier when no star at the ending
         if (isFounded && (i == views->GetSize() - 1) && this->endsWithStar == false) {
             
             if (lastEndsAt < end) {
@@ -141,7 +145,6 @@ bool PatternInfo::matchWith(const char *str) {
         }
         
     }
-    
     
     return true;
 }
