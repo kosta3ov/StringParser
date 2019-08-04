@@ -131,7 +131,7 @@
     const char* joinedStr = [joined cStringUsingEncoding:NSUTF8StringEncoding];
     
     // Writing to file
-    size_t count = fwrite(joinedStr, sizeof(char), strlen(joinedStr), self.file);
+    fwrite(joinedStr, sizeof(char), strlen(joinedStr), self.file);
     
     // Getting last position in file and return
     long position = ftell(self.file);

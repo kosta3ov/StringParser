@@ -10,13 +10,13 @@
 #import "StringViewerController.h"
 #import "FacadeService.h"
 
-@interface ListResultViewController () <UITableViewDataSource, UITableViewDelegate, FacadeServiceProtocol>
+@interface ListResultViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) FacadeService* service;
 
 @property (strong, nonatomic) NSMutableArray<NSString*>* parsedLines;
 
-@property (assign, nonatomic) BOOL isLoading;
+@property (strong, nonatomic) NSTimer* timer;
 
 @end
 
@@ -27,9 +27,7 @@
     self = [super initWithCoder:aDecoder];
     if (self) {
         self.parsedLines = [[NSMutableArray new] autorelease];
-        self.isLoading = NO;
         self.service = [[[FacadeService alloc] init] autorelease];
-        self.service.delegate = self;
         
         _fileURL = nil;
         _stringPattern = nil;
@@ -49,18 +47,28 @@
     
     [self.service configureScannerWith:self.stringPattern];
     [self.service downloadFileAt:self.fileURL];
+    
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
 }
 
 #pragma mark - FacadeServiceProtocol
 
-- (void)serviceDownloadedFirstData {
-    dispatch_async(dispatch_get_main_queue(), ^{
-       
+- (void) timerFired {
+    
+    CGFloat height = self.tableView.frame.size.height;
+    
+    CGFloat contentYoffset = self.tableView.contentOffset.y;
+    
+    CGFloat distanceFromBottom = self.tableView.contentSize.height - contentYoffset;
+    
+    if (distanceFromBottom < height) {
         NSMutableArray* newLines = [[self.service readNewLines] autorelease];
-        [self.parsedLines addObjectsFromArray:newLines];
-        [self.tableView reloadData];
-        
-    });
+        if ([newLines count]) {
+            [self.parsedLines addObjectsFromArray:newLines];
+            [self.tableView reloadData];
+        }
+    }
+    
 }
 
 #pragma mark - TableView DataSource
@@ -108,12 +116,16 @@
 #pragma mark - Clear
 
 - (void) clear {
+    [_timer invalidate];
+    [_timer release];
+    
     [_tableView release];
     [_service release];
     [_parsedLines release];
     [_fileURL release];
     [_stringPattern release];
     
+    _timer = nil;
     _tableView = nil;
     _service = nil;
     _parsedLines = nil;

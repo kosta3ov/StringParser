@@ -67,11 +67,7 @@
         }
         
         // Writing filtered lines into file results.log
-        BOOL successWriting = [self.fileHandler writeNewLines:linesToWrite];
-        if (successWriting) {
-            [self.delegate serviceDownloadedFirstData];
-            self.delegate = nil;
-        }
+        [self.fileHandler writeNewLines:linesToWrite];
         
         // Updating cached data
         downloader.downloadData = nil;
@@ -101,8 +97,9 @@
 }
 
 - (NSMutableArray<NSString *> *)readNewLines {
-    
-    return [self.fileHandler getNewStrings];
+    NSMutableArray* newLines = [self.fileHandler getNewStrings];
+    [newLines filterUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.length > 0"]];
+    return newLines;
 }
 
 #pragma mark - Clear
@@ -113,7 +110,6 @@
     [_scanner release];
     [_fileHandler release];
     
-    _delegate = nil;
     _downloader = nil;
     _scanner = nil;
     _fileHandler = nil;

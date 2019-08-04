@@ -21,7 +21,7 @@ StringView::StringView(char* start, size_t length) {
 
 bool StringView::match(StringView* view) {
     for (int i = 0; i < view->length; i++) {
-        if (this->start[i] != view->start[i] || this->start[i] == QUESTION) {
+        if (this->start[i] != view->start[i] && this->start[i] != QUESTION) {
             return false;
         }
     }

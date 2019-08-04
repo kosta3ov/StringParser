@@ -13,17 +13,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@protocol FacadeServiceProtocol <NSObject>
-
-- (void) serviceDownloadedFirstData;
-
-@end
-
 @class FacadeService;
 
 @interface FacadeService : NSObject <DownloaderDelegate>
-
-@property (weak, nonatomic) id<FacadeServiceProtocol> delegate;
 
 // Configuring scanner pattern
 - (void) configureScannerWith:(NSString*) pattern;
