@@ -67,6 +67,8 @@
 #pragma mark - Clear
 
 - (void)dealloc {
+    [_task cancel];
+    
     [_downloadData release];
     [_session release];
     [_task release];

@@ -82,33 +82,64 @@ bool PatternInfo::matchWith(const char *str) {
     
     char* pointer = (char*)str;
     
+    bool lastValue = false;
+    char* lastEndsAt = NULL;
+    
+    // Iterating through views
     for (int i = 0; i < views->GetSize(); i++) {
         StringView* view = views->Get(i);
         
         bool isFounded = false;
+    
+        if (i == views->GetSize() - 1) {
+            lastValue = true;
+        }
         
-        while (pointer + view->length < end) {
+        // Moving through string
+        while (pointer + view->length <= end) {
+            
+            // Make subView from pointer with length offset
             StringView subView = StringView(pointer, view->length);
+            
+            // Checking match
             if (view->match(&subView)) {
+                
+                // Move pointer
                 pointer += view->length;
+                
                 isFounded = true;
+                
+                if (lastValue) {
+                    lastEndsAt = pointer;
+                    continue;
+                }
+                
                 break;
             }
             else {
-                if (this->startsWithStar == false) {
+                // First mismatch without first stars
+                if (this->startsWithStar == false && i == 0) {
                     return false;
                 }
+                // Move pointer
                 pointer++;
             }
         }
         
+        // if not found and pointer out of range -> false
         if (!isFounded && (pointer + view->length >= end)) {
             return false;
         }
         
-        if (isFounded && (i == views->GetSize() - 1) && (pointer < end) && this->endsWithStar == false) {
-            return false;
+        // if found and last view poiner end earlier when no star at the end
+        if (isFounded && (i == views->GetSize() - 1) && this->endsWithStar == false) {
+            
+            if (lastEndsAt < end) {
+                return false;
+            }
+            
         }
+        
     }
     
     

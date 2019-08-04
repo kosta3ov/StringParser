@@ -10,6 +10,8 @@
 #import "StringViewerController.h"
 #import "FacadeService.h"
 
+static const double TimerInterval = 0.5;
+
 @interface ListResultViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) FacadeService* service;
@@ -48,7 +50,7 @@
     [self.service configureScannerWith:self.stringPattern];
     [self.service downloadFileAt:self.fileURL];
     
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:TimerInterval target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
 }
 
 #pragma mark - FacadeServiceProtocol
@@ -56,12 +58,13 @@
 - (void) timerFired {
     
     CGFloat height = self.tableView.frame.size.height;
-    
     CGFloat contentYoffset = self.tableView.contentOffset.y;
-    
     CGFloat distanceFromBottom = self.tableView.contentSize.height - contentYoffset;
     
+    // Checking position at bottom
     if (distanceFromBottom < height) {
+        
+        // When at bottom read new lines from file
         NSMutableArray* newLines = [[self.service readNewLines] autorelease];
         if ([newLines count]) {
             [self.parsedLines addObjectsFromArray:newLines];
@@ -98,20 +101,6 @@
     [self.navigationController pushViewController:svc animated:YES];
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == self.parsedLines.count - 1) {
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSMutableArray<NSString*>* newStrings = [[self.service readNewLines] autorelease];
-            
-            if ([newStrings count]) {
-                [self.parsedLines addObjectsFromArray:newStrings];
-                [self.tableView reloadData];
-            }
-        });
-        
-    }
-}
 
 #pragma mark - Clear
 
@@ -134,6 +123,7 @@
 }
 
 - (void)dealloc {
+    
     [self clear];
     [super dealloc];
 }
