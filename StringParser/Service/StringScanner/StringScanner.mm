@@ -27,13 +27,17 @@
     return self;
 }
 
-- (void) setFilter:(NSString*)filter {
-    const char* filterString = [filter cStringUsingEncoding:NSUTF8StringEncoding];
-    reader->SetFilter(filterString);
+- (BOOL) setFilter:(NSString*)filter {
+    const char* filterString = [filter cStringUsingEncoding:NSASCIIStringEncoding];
+    if (filterString) {
+        reader->SetFilter(filterString);
+        return YES;
+    }
+    return NO;
 }
 
 - (BOOL) addSourceBlock:(NSString*) string {
-    const char* str = [string cStringUsingEncoding:NSUTF8StringEncoding];
+    const char* str = [string cStringUsingEncoding:NSASCIIStringEncoding];
     return (BOOL)reader->AddSourceBlock(str, strlen(str));
 }
 

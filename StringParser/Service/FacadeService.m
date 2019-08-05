@@ -41,11 +41,26 @@
 
 #pragma mark - Downloader delegate
 
+- (void) completedWithResponse:(NSURLResponse*) response {
+    NSInteger code = [response statusCode];
+    if (code >= 200 && code < 300) {
+        [self.delegate successDownload];
+    }
+    else {
+        [self.delegate failedDownloadWithError:nil];
+    }
+}
+
+- (void) completedWithError:(NSError*) err {
+    [self.delegate failedDownloadWithError:err];
+}
+
+
 - (void) downloadPartDataFrom:(Downloader*) downloader {
     
     @autoreleasepool {
         // Creating string from recieved data
-        NSString* str = [[[NSString alloc] initWithData:downloader.downloadData encoding:NSUTF8StringEncoding] autorelease];
+        NSString* str = [[[NSString alloc] initWithData:downloader.downloadData encoding:NSASCIIStringEncoding] autorelease];
         
         // Creating array for lines to write in the file
         NSMutableArray<NSString*> *linesToWrite = [[NSMutableArray new] autorelease];
@@ -67,12 +82,14 @@
         }
         
         // Writing filtered lines into file results.log
-        [self.fileHandler writeNewLines:linesToWrite];
+        if ([linesToWrite count]) {
+            [self.fileHandler writeNewLines:linesToWrite];
+        }
         
         // Updating cached data
         downloader.downloadData = nil;
         
-        NSMutableData* newData = [[[lastLine dataUsingEncoding:NSUTF8StringEncoding] mutableCopy] autorelease];
+        NSMutableData* newData = [[[lastLine dataUsingEncoding:NSASCIIStringEncoding] mutableCopy] autorelease];
         downloader.downloadData = newData;
     }
     
@@ -80,9 +97,9 @@
 
 #pragma mark - Functions
 
-- (void) configureScannerWith:(NSString*) pattern {
+- (BOOL) configureScannerWith:(NSString*) pattern {
     
-    [self.scanner setFilter:pattern];
+    return [self.scanner setFilter:pattern];
 }
 
 - (void) downloadFileAt:(NSString*) fileURL {

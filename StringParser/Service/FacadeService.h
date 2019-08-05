@@ -15,10 +15,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class FacadeService;
 
+@protocol FacadeDelegate
+
+- (void) failedDownloadWithError:(nullable NSError*) err;
+- (void) successDownload;
+
+@end
+
 @interface FacadeService : NSObject <DownloaderDelegate>
 
+@property (weak, nonatomic) id<FacadeDelegate> delegate;
+
 // Configuring scanner pattern
-- (void) configureScannerWith:(NSString*) pattern;
+- (BOOL) configureScannerWith:(NSString*) pattern;
 
 // Start downloading new file at url
 - (void) downloadFileAt:(NSString*) fileURL;

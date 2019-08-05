@@ -32,7 +32,7 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* documentsDir = (NSString*)[paths objectAtIndex:0];
     NSString *fileName = [documentsDir stringByAppendingPathComponent:@"results.log"];
-    const char* path = [fileName cStringUsingEncoding:NSUTF8StringEncoding];
+    const char* path = [fileName cStringUsingEncoding:NSASCIIStringEncoding];
     self.resultsLogPath = strdup(path);
     
 }
@@ -71,6 +71,7 @@
         long p = pos.longValue;
         if (p > self.currentOffset) {
             firstUnreadPosition = i;
+            break;
         }
     }
     
@@ -97,18 +98,18 @@
         long len = pos - self.currentOffset;
         
         // Reading from file
-        char* string = (char*)malloc(sizeof(char) * len);
+        char* string = (char*)malloc(sizeof(char) * len + 1);
         fread(string, sizeof(char), (size_t)len, f);
+        string[len] = '\0';
         
         // Adding new lines + converting
-        NSString* bigString = [[[NSString alloc] initWithCString:string encoding:NSUTF8StringEncoding] autorelease];
-        
-        // Releasing memmory
-        free(string);
+        NSString* bigString = [[[NSString alloc] initWithCString:string encoding:NSASCIIStringEncoding] autorelease];
         
         NSArray<NSString*>* lines = [bigString componentsSeparatedByString:@"\n"];
         [arr addObjectsFromArray:lines];
         
+        // Releasing memmory
+        free(string);
         // Updating current position
         self.currentOffset = pos;
     }
@@ -127,10 +128,10 @@
 
 - (long) writeLines:(NSArray<NSString*>*) lines {
     // Getting united string from lines by \n char
-    NSString* joined = [lines componentsJoinedByString:@"\n"];
+    NSString* joined = [NSString stringWithFormat:@"%@\n", [lines componentsJoinedByString:@"\n"]];
     
     // C-string
-    const char* joinedStr = [joined cStringUsingEncoding:NSUTF8StringEncoding];
+    const char* joinedStr = [joined cStringUsingEncoding:NSASCIIStringEncoding];
     
     // Writing to file
     fwrite(joinedStr, sizeof(char), strlen(joinedStr), self.file);

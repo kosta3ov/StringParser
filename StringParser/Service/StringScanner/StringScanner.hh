@@ -10,7 +10,7 @@
 
 @interface StringScanner : NSObject
 
-- (void) setFilter:(NSString*) filter;
+- (BOOL) setFilter:(NSString*) filter;
 - (BOOL) addSourceBlock:(NSString*) string;
 
 @end

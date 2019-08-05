@@ -57,9 +57,11 @@
 
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
     if (error) {
+        [self.delegate completedWithError:error];
         NSLog(@"%@", [error localizedDescription]);
     }
     else {
+        [self.delegate completedWithResponse:task.response];
         NSLog(@"Response: %@", task.response);
     }
 }

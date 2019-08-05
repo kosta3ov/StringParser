@@ -12,7 +12,7 @@
 
 static const double TimerInterval = 0.5;
 
-@interface ListResultViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ListResultViewController () <UITableViewDataSource, UITableViewDelegate, FacadeDelegate>
 
 @property (strong, nonatomic) FacadeService* service;
 
@@ -30,6 +30,7 @@ static const double TimerInterval = 0.5;
     if (self) {
         self.parsedLines = [[NSMutableArray new] autorelease];
         self.service = [[[FacadeService alloc] init] autorelease];
+        self.service.delegate = self;
         
         _fileURL = nil;
         _stringPattern = nil;
@@ -47,13 +48,16 @@ static const double TimerInterval = 0.5;
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
     
-    [self.service configureScannerWith:self.stringPattern];
+    BOOL success = [self.service configureScannerWith:self.stringPattern];
+    if (!success) {
+        [self showAlert:@"Error" message:@"Can't set filter string\nWrong characters"];
+    }
+    
     [self.service downloadFileAt:self.fileURL];
     
+    // Timer checking bottom position and reading new lines from file results.log
     self.timer = [NSTimer scheduledTimerWithTimeInterval:TimerInterval target:self selector:@selector(timerFired) userInfo:nil repeats:YES];
 }
-
-#pragma mark - FacadeServiceProtocol
 
 - (void) timerFired {
     
@@ -72,6 +76,29 @@ static const double TimerInterval = 0.5;
         }
     }
     
+}
+
+- (void) showAlert:(NSString*) title message:(NSString*) message {
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+#pragma mark - FacadeServiceProtocol
+
+
+- (void) failedDownloadWithError:(nullable NSError*) err {
+    NSString* message = @"Failed download\nResponse is not 200 OK";
+    if (err) {
+        message = [err localizedDescription];
+    }
+    [self showAlert:@"Error" message:message];
+}
+
+- (void) successDownload {
+    if ([self.parsedLines count] == 0) {
+        [self showAlert:@"Warning" message:@"All data has been processed\nNo one line has been filtered"];
+    }
 }
 
 #pragma mark - TableView DataSource

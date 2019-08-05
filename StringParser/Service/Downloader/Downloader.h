@@ -15,6 +15,8 @@
 // Delegate method called each time after recieving data
 
 - (void) downloadPartDataFrom:(Downloader*) downloader;
+- (void) completedWithResponse:(NSURLResponse*) response;
+- (void) completedWithError:(NSError*) err;
 
 @end
 

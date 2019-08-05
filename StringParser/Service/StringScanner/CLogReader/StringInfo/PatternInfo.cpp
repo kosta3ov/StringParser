@@ -88,6 +88,18 @@ bool PatternInfo::matchWith(const char *str) {
     bool lastValue = false;
     char* lastEndsAt = NULL;
     
+    
+    if (this->startsWithStar == false && this->endsWithStar == false && views->GetSize() == 1) {
+        StringView subView = StringView(pointer, strlen(str));
+        StringView* view = views->Get(0);
+        
+        if (view->length != subView.length) {
+            return false;
+        }
+        
+        return view->match(&subView);
+    }
+    
     // Iterating through views
     for (int i = 0; i < views->GetSize(); i++) {
         StringView* view = views->Get(i);
