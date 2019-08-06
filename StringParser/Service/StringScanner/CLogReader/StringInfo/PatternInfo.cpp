@@ -13,35 +13,35 @@ typedef enum {
     star, character
 } State;
 
+
 PatternInfo::PatternInfo() {
-    this->string = new char [0];
-    this->length = 0;
-    this->startsWithStar = false;
-    this->endsWithStar = false;
-    this->views = new Vector<StringView>(1);
+    string = new char [0];
+    length = 0;
+    startsWithStar = false;
+    endsWithStar = false;
+    views = new Vector<StringView>(1);
 }
 
 PatternInfo::PatternInfo(const char* str) {
-    this->string = strdup(str);
-    this->length = strlen(str);
+    string = strdup(str);
+    length = strlen(str);
     
     if (str[0] == STAR) {
-        this->startsWithStar = true;
+        startsWithStar = true;
     }
     
-    if (str[this->length - 1] == STAR) {
-        this->endsWithStar = true;
+    if (str[length - 1] == STAR) {
+        endsWithStar = true;
     }
     
-    this->views = new Vector<StringView>(10);
-    this->splitIntoViews();
+    views = new Vector<StringView>(10);
+    splitIntoViews();
     
 }
 
 PatternInfo::~PatternInfo() {
     delete views;
     delete [] string;
-
 }
 
 
@@ -79,83 +79,82 @@ void PatternInfo::splitIntoViews() {
 }
 
 bool PatternInfo::matchWith(const char *str) {
-    size_t len = strlen(str);
-    const char* end = str + len;
+    int len = static_cast<int>(strlen(str));
+    char* end = const_cast<char*>(str) + len;
+    char* pointer = const_cast<char*>(str);
     
-    char* pointer = (char*)str;
+    int firstViewIndex = 0;
+    int lastViewIndex = static_cast<int>(views->GetSize() - 1);
     
-    // Settings for last string view
-    bool lastValue = false;
-    char* lastEndsAt = NULL;
-    
-    
-    if (this->startsWithStar == false && this->endsWithStar == false && views->GetSize() == 1) {
-        StringView subView = StringView(pointer, strlen(str));
-        StringView* view = views->Get(0);
+    //First part processing
+    if (!startsWithStar) {
+        StringView firstView = views->Get(firstViewIndex);
         
-        if (view->length != subView.length) {
+        if (len < firstView.length) {
+            return false;
+        }
+
+        const StringView subView = StringView(pointer, firstView.length);
+        
+        if (!firstView.match(subView)) {
             return false;
         }
         
-        return view->match(&subView);
+        firstViewIndex++;
+        pointer += firstView.length;
     }
     
-    // Iterating through views
-    for (int i = 0; i < views->GetSize(); i++) {
-        StringView* view = views->Get(i);
+
+    //Last part processing
+    if (!endsWithStar) {
+        StringView lastView = views->Get(lastViewIndex);
         
-        bool isFounded = false;
-        
-        if (i == views->GetSize() - 1) {
-            lastValue = true;
+        if (len < lastView.length) {
+            return false;
         }
         
-        // Moving through string
-        while (pointer + view->length <= end) {
+        const StringView subView = StringView(end - lastView.length, lastView.length);
+        
+        if (!lastView.match(subView)) {
+            return false;
+        }
+        
+        lastViewIndex--;
+        if (lastViewIndex < 0) {
+            lastViewIndex = 0;
+        }
+        
+        end -= lastView.length;
+    }
+    
+    
+    if (pointer >= end) {
+        return false;
+    }
+    
+    // Processing between first and last parts
+    for (int i = firstViewIndex; i <= lastViewIndex; i++) {
+        StringView view = views->Get(i);
+        
+        bool found = false;
+        
+        while (pointer + view.length <= end) {
             
-            // Make subView from pointer with length offset
-            StringView subView = StringView(pointer, view->length);
+            const StringView subView = StringView(pointer, view.length);
             
-            // Checking match
-            if (view->match(&subView)) {
-                
-                // Move pointer
-                pointer += view->length;
-                
-                isFounded = true;
-                
-                // Get last matched pointer for last string viw
-                if (lastValue) {
-                    lastEndsAt = pointer;
-                    continue;
-                }
-                
+            if (view.match(subView)) {
+                found = true;
+                pointer += view.length;
                 break;
             }
             else {
-                // First mismatch without stars at the beginning for first view
-                if (this->startsWithStar == false && i == 0) {
-                    return false;
-                }
-                // Move pointer
                 pointer++;
             }
         }
         
-        // if not found and pointer out of range -> false
-        if (!isFounded && (pointer + view->length >= end)) {
+        if (!found) {
             return false;
         }
-        
-        // if found and last view poiner ends earlier when no star at the ending
-        if (isFounded && (i == views->GetSize() - 1) && this->endsWithStar == false) {
-            
-            if (lastEndsAt < end) {
-                return false;
-            }
-            
-        }
-        
     }
     
     return true;

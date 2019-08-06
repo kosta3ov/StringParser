@@ -11,14 +11,14 @@
 #include "PatternInfo.hpp"
 
 CLogReader::CLogReader() {
-    this->blockString = new char [0];
-    this->filterString = new char [0];
-    this->info = new PatternInfo();
+    blockString = NULL;
+    filterString = NULL;
+    info = new PatternInfo();
 }
 
 CLogReader::~CLogReader() {
-    delete [] this->filterString;
-    delete [] this->blockString;
+    delete [] filterString;
+    delete [] blockString;
     delete info;
 }
 
@@ -28,25 +28,25 @@ bool CLogReader::SetFilter(const char *filter) {
         return false;
     }
     
-    delete [] this->filterString;
-    this->filterString = strdup(filter);
+    delete [] filterString;
+    filterString = strdup(filter);
     
-    delete this->info;
-    this->info = new PatternInfo(this->filterString);
+    delete info;
+    info = new PatternInfo(filterString);
     
     return true;
 }
 
 bool CLogReader::AddSourceBlock(const char *block, const size_t block_size) {
     
-    delete [] this->blockString;
+    delete [] blockString;
     
-    this->blockString = strdup(block);
+    blockString = strdup(block);
     
     return startSearching();
 }
 
 
 bool CLogReader::startSearching() {
-    return this->info->matchWith(this->blockString);
+    return info->matchWith(blockString);
 }

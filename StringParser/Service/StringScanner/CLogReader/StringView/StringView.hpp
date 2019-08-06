@@ -19,7 +19,7 @@ public:
     StringView(char* start, size_t length);
     StringView();
     
-    bool match(StringView* view);
+    bool match(const StringView& view);
 };
 
 #endif /* StringView_hpp */

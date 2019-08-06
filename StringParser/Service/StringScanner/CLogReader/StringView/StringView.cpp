@@ -10,8 +10,8 @@
 #include "PatternInfo.hpp"
 
 StringView::StringView() {
-    this->start = NULL;
-    this->length = 0;
+    start = NULL;
+    length = 0;
 }
 
 StringView::StringView(char* start, size_t length) {
@@ -19,10 +19,12 @@ StringView::StringView(char* start, size_t length) {
     this->length = length;
 }
 
-bool StringView::match(StringView* view) {
+bool StringView::match(const StringView& view) {
     
-    for (int i = 0; i < this->length; i++) {
-        if (this->start[i] != view->start[i] && this->start[i] != QUESTION) {
+    for (int i = 0; i < length; i++) {
+        
+        if (start[i] != view.start[i] && start[i] != QUESTION) {
+            
             return false;
         }
     }

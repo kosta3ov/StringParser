@@ -19,7 +19,7 @@ public:
     void PushBack (T* value);
     ~Vector ();
     size_t GetSize ();
-    T* Get(size_t index);
+    T& Get(size_t index);
     
 private:
     size_t Size;
@@ -31,36 +31,36 @@ private:
 
 template <typename T>
 Vector<T>::Vector (size_t newCapacity) {
-    this->Capacity = 1;
-    this->Size = 0;
-    this->Capacity = GetOptimalCapacity (newCapacity);
-    this->Data = new T[this->Capacity];
+    Capacity = 1;
+    Size = 0;
+    Capacity = GetOptimalCapacity (newCapacity);
+    Data = new T[Capacity];
 }
 
 
 template <typename T>
 void Vector<T>::PushBack (T* value){
-    this->Size++;
-    if (this->Size > this->Capacity) {
-        Resize(this->Size);
+    Size++;
+    if (Size > Capacity) {
+        Resize(Size);
     }
-    this->Data[Size - 1] = *value;
+    Data[Size - 1] = *value;
 }
 
 
 template <typename T>
-T* Vector<T>::Get(size_t index) {
-    return &(this->Data[index]);
+T& Vector<T>::Get(size_t index) {
+    return Data[index];
 }
 
 template <typename T>
 size_t Vector<T>::GetSize () {
-    return this->Size;
+    return Size;
 }
 
 template <typename T>
 size_t Vector<T>::GetOptimalCapacity (size_t newCap) {
-    size_t res = this->Capacity;
+    size_t res = Capacity;
     while (res < newCap) {
         res *= 2;
     }
@@ -74,20 +74,20 @@ template <typename T>
 void Vector<T>::Resize (size_t newSize) {
     size_t optimalCap = GetOptimalCapacity(newSize);
     T* newData = new T[optimalCap];
-    if (optimalCap > this->Capacity) {
-        for (int i = 0; i < this->Size; i++) {
-            newData[i] = this->Data[i];
+    if (optimalCap > Capacity) {
+        for (int i = 0; i < Size; i++) {
+            newData[i] = Data[i];
         }
     }
     else {
         for (int i = 0; i < newSize; i++) {
-            newData[i] = this->Data[i];
+            newData[i] = Data[i];
         }
     }
-    this->Capacity = optimalCap;
-    delete [] this->Data;
-    this->Data = newData;
-    this->Size = newSize;
+    Capacity = optimalCap;
+    delete [] Data;
+    Data = newData;
+    Size = newSize;
 }
 
 template <typename T>
