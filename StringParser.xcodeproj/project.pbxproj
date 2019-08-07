@@ -21,8 +21,23 @@
 		95C1C8A222FA2E3900C27337 /* CLogReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95C1C89822FA2E3900C27337 /* CLogReader.cpp */; };
 		95C1C8A322FA2E3900C27337 /* StringView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95C1C89B22FA2E3900C27337 /* StringView.cpp */; };
 		95C1C8A422FA2E3900C27337 /* PatternInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95C1C89D22FA2E3900C27337 /* PatternInfo.cpp */; };
+		95C1C8AC22FB521900C27337 /* StringParserTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 95C1C8AB22FB521900C27337 /* StringParserTests.mm */; };
+		95C1C8B322FB57BF00C27337 /* StringScanner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9543BF9D22EA788F00DE465F /* StringScanner.mm */; };
+		95C1C8B422FB57C300C27337 /* CLogReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95C1C89822FA2E3900C27337 /* CLogReader.cpp */; };
+		95C1C8B522FB57C700C27337 /* StringView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95C1C89B22FA2E3900C27337 /* StringView.cpp */; };
+		95C1C8B622FB57C900C27337 /* PatternInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95C1C89D22FA2E3900C27337 /* PatternInfo.cpp */; };
 		95E4A48222F6191000572526 /* FileHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 95E4A48122F6191000572526 /* FileHandler.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		95C1C8AE22FB521900C27337 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9543BF6622EA343600DE465F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9543BF6D22EA343600DE465F;
+			remoteInfo = StringParser;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		9543BF6E22EA343600DE465F /* StringParser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StringParser.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,12 +67,22 @@
 		95C1C89E22FA2E3900C27337 /* PatternInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PatternInfo.hpp; sourceTree = "<group>"; };
 		95C1C8A022FA2E3900C27337 /* vector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = vector.hpp; sourceTree = "<group>"; };
 		95C1C8A122FA2E3900C27337 /* CLogReader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CLogReader.hpp; sourceTree = "<group>"; };
+		95C1C8A922FB521900C27337 /* StringParserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StringParserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		95C1C8AB22FB521900C27337 /* StringParserTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = StringParserTests.mm; sourceTree = "<group>"; };
+		95C1C8AD22FB521900C27337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95E4A48022F6191000572526 /* FileHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileHandler.h; sourceTree = "<group>"; };
 		95E4A48122F6191000572526 /* FileHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileHandler.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		9543BF6B22EA343600DE465F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95C1C8A622FB521900C27337 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -71,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				9543BF7022EA343600DE465F /* StringParser */,
+				95C1C8AA22FB521900C27337 /* StringParserTests */,
 				9543BF6F22EA343600DE465F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -79,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				9543BF6E22EA343600DE465F /* StringParser.app */,
+				95C1C8A922FB521900C27337 /* StringParserTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -196,6 +223,15 @@
 			path = Vector;
 			sourceTree = "<group>";
 		};
+		95C1C8AA22FB521900C27337 /* StringParserTests */ = {
+			isa = PBXGroup;
+			children = (
+				95C1C8AB22FB521900C27337 /* StringParserTests.mm */,
+				95C1C8AD22FB521900C27337 /* Info.plist */,
+			);
+			path = StringParserTests;
+			sourceTree = "<group>";
+		};
 		95E4A48322F6191B00572526 /* FileHandler */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,6 +270,24 @@
 			productReference = 9543BF6E22EA343600DE465F /* StringParser.app */;
 			productType = "com.apple.product-type.application";
 		};
+		95C1C8A822FB521900C27337 /* StringParserTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 95C1C8B022FB521900C27337 /* Build configuration list for PBXNativeTarget "StringParserTests" */;
+			buildPhases = (
+				95C1C8A522FB521900C27337 /* Sources */,
+				95C1C8A622FB521900C27337 /* Frameworks */,
+				95C1C8A722FB521900C27337 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				95C1C8AF22FB521900C27337 /* PBXTargetDependency */,
+			);
+			name = StringParserTests;
+			productName = StringParserTests;
+			productReference = 95C1C8A922FB521900C27337 /* StringParserTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -245,6 +299,10 @@
 				TargetAttributes = {
 					9543BF6D22EA343600DE465F = {
 						CreatedOnToolsVersion = 10.2.1;
+					};
+					95C1C8A822FB521900C27337 = {
+						CreatedOnToolsVersion = 10.3;
+						TestTargetID = 9543BF6D22EA343600DE465F;
 					};
 				};
 			};
@@ -262,6 +320,7 @@
 			projectRoot = "";
 			targets = (
 				9543BF6D22EA343600DE465F /* StringParser */,
+				95C1C8A822FB521900C27337 /* StringParserTests */,
 			);
 		};
 /* End PBXProject section */
@@ -274,6 +333,13 @@
 				9543BF7E22EA343800DE465F /* LaunchScreen.storyboard in Resources */,
 				9543BF7B22EA343800DE465F /* Assets.xcassets in Resources */,
 				9543BF7922EA343600DE465F /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		95C1C8A722FB521900C27337 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,7 +365,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		95C1C8A522FB521900C27337 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				95C1C8B622FB57C900C27337 /* PatternInfo.cpp in Sources */,
+				95C1C8AC22FB521900C27337 /* StringParserTests.mm in Sources */,
+				95C1C8B522FB57C700C27337 /* StringView.cpp in Sources */,
+				95C1C8B322FB57BF00C27337 /* StringScanner.mm in Sources */,
+				95C1C8B422FB57C300C27337 /* CLogReader.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		95C1C8AF22FB521900C27337 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9543BF6D22EA343600DE465F /* StringParser */;
+			targetProxy = 95C1C8AE22FB521900C27337 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9543BF7722EA343600DE465F /* Main.storyboard */ = {
@@ -469,6 +555,46 @@
 			};
 			name = Release;
 		};
+		95C1C8B122FB521900C27337 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X6AXDSPYVA;
+				INFOPLIST_FILE = StringParserTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = kosta3ov.StringParserTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StringParser.app/StringParser";
+			};
+			name = Debug;
+		};
+		95C1C8B222FB521900C27337 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = X6AXDSPYVA;
+				INFOPLIST_FILE = StringParserTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = kosta3ov.StringParserTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StringParser.app/StringParser";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -486,6 +612,15 @@
 			buildConfigurations = (
 				9543BF8522EA343800DE465F /* Debug */,
 				9543BF8622EA343800DE465F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		95C1C8B022FB521900C27337 /* Build configuration list for PBXNativeTarget "StringParserTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				95C1C8B122FB521900C27337 /* Debug */,
+				95C1C8B222FB521900C27337 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

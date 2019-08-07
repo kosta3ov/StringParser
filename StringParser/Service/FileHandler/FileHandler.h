@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) clearLogFile;
 - (NSMutableArray<NSString*>*) getNewStrings;
 - (BOOL) writeNewLines:(NSMutableArray<NSString*>*) lines;
+- (long long) countLines;
 
 @end
 

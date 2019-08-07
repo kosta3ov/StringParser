@@ -11,6 +11,7 @@
 @interface FileHandler()
 
 @property (assign, nonatomic) FILE* file;
+@property (assign, nonatomic) long long linesCount;
 
 @end
 
@@ -43,6 +44,10 @@
     self.currentOffset = 0;
     
     self.file = fopen(self.resultsLogPath, "w+");
+}
+
+- (long long) countLines {
+    return self.linesCount;
 }
 
 - (BOOL) writeNewLines:(NSMutableArray<NSString*>*) lines {
@@ -128,6 +133,8 @@
 
 - (long) writeLines:(NSArray<NSString*>*) lines {
     // Getting united string from lines by \n char
+    self.linesCount += [lines count];
+    
     NSString* joined = [NSString stringWithFormat:@"%@\n", [lines componentsJoinedByString:@"\n"]];
     
     // C-string

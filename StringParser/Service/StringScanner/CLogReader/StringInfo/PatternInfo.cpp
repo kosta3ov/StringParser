@@ -15,7 +15,7 @@ typedef enum {
 
 
 PatternInfo::PatternInfo() {
-    string = new char [0];
+    string = NULL;
     length = 0;
     startsWithStar = false;
     endsWithStar = false;

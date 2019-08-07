@@ -20,6 +20,8 @@ static const double TimerInterval = 0.5;
 
 @property (strong, nonatomic) NSTimer* timer;
 
+@property (assign, nonatomic) BOOL allDataDownloaded;
+
 @end
 
 @implementation ListResultViewController
@@ -34,6 +36,7 @@ static const double TimerInterval = 0.5;
         
         _fileURL = nil;
         _stringPattern = nil;
+        _allDataDownloaded = NO;
     }
     return self;
 }
@@ -60,6 +63,13 @@ static const double TimerInterval = 0.5;
 }
 
 - (void) timerFired {
+    
+    if (self.allDataDownloaded && self.service.linesCount == [self.parsedLines count]) {
+        [self.timer invalidate];
+        self.timer = nil;
+        return;
+    }
+    
     
     CGFloat height = self.tableView.frame.size.height;
     CGFloat contentYoffset = self.tableView.contentOffset.y;
@@ -88,6 +98,7 @@ static const double TimerInterval = 0.5;
 
 
 - (void) failedDownloadWithError:(nullable NSError*) err {
+    self.allDataDownloaded = YES;
     NSString* message = @"Failed download\nResponse is not 200 OK";
     if (err) {
         message = [err localizedDescription];
@@ -96,6 +107,7 @@ static const double TimerInterval = 0.5;
 }
 
 - (void) successDownload {
+    self.allDataDownloaded = YES;
     if ([self.parsedLines count] == 0) {
         [self showAlert:@"Warning" message:@"All data has been processed\nNo one line has been filtered"];
     }

@@ -55,6 +55,9 @@
     [self.delegate failedDownloadWithError:err];
 }
 
+- (long long) linesCount {
+    return self.fileHandler.countLines;
+}
 
 - (void) downloadPartDataFrom:(Downloader*) downloader {
     

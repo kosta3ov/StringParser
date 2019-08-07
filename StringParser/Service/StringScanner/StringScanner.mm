@@ -18,8 +18,7 @@
 
 @implementation StringScanner
 
-- (instancetype)init
-{
+- (instancetype)init {
     self = [super init];
     if (self) {
         reader = new CLogReader();

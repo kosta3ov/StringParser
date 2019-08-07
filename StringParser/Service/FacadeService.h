@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 // Receive new lines from file when scrolled to bottom
 - (NSMutableArray<NSString*>*) readNewLines;
 
+- (long long) linesCount;
+
 @end
 
 NS_ASSUME_NONNULL_END
