@@ -51,7 +51,7 @@ void PatternInfo::splitIntoViews() {
     
     StringView* view = NULL;
     
-    // Get vector of string views
+    // Get vector of string views between stars
     for (int i = 0; i < length; i++) {
         newState = string[i] != STAR ? character : star;
         
